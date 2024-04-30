@@ -6,7 +6,7 @@ const router = Router()
 const manager = new ProductManager("./src/products.json");
 
 
-router.get("/products", async (req, res) => {
+router.get("/", async (req, res) => {
     try {
         const limit = parseInt(req.query.limit) || 0;
         const products = await manager.getProducts(limit);
@@ -16,7 +16,7 @@ router.get("/products", async (req, res) => {
     }
 });
 
-router.get("products/:pid", async (req, res) => {
+router.get("/:pid", async (req, res) => {
     try {
         const product = await manager.getProductById(req.params.pid);
         res.send({ status: 1, payload: product });
@@ -53,7 +53,7 @@ router.post("/", uploadMiddleware, async (req, res) => {
 });
 
 
-router.put("products/:pid", async (req, res) => {
+router.put("/:pid", async (req, res) => {
     try {
         const { title, price, description, thumbnails } = req.body;
         const productId = req.params.pid;
@@ -87,7 +87,7 @@ router.put("products/:pid", async (req, res) => {
 });
 
 
-router.delete("products/:pid", async (req, res) => {
+router.delete("/:pid", async (req, res) => {
     try {
         const productId = req.params.pid;
 
