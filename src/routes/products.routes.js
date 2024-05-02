@@ -16,6 +16,7 @@ router.get("/", async (req, res) => {
     }
 });
 
+
 router.get("/:pid", async (req, res) => {
     try {
         const product = await manager.getProductById(req.params.pid);
@@ -24,6 +25,7 @@ router.get("/:pid", async (req, res) => {
         res.status(500).send({ status: 0, message: "Error al obtener el producto" });
     }
 });
+
 
 
 router.post("/", uploadMiddleware, async (req, res) => {
