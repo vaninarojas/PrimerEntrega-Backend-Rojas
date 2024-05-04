@@ -1,0 +1,28 @@
+
+<h3>Nuevo producto</h3>
+
+<form id="productForm">
+    <input class="form-control" type="text" id="name" name="name" placeholder="Nombre" style="width: 300px;"><br />
+    <input class="form-control" type="number" id="price" name="price" style="width: 100px;"><br />
+
+    <button type="submit" class="btn btn-success">Cargar</button>
+</form>
+
+<script src="https://cdn.socket.io/4.7.5/socket.io.min.js" integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO" crossorigin="anonymous"></script>
+
+<script>    
+const serverAddress = 'ws://localhost:8080';
+const socketClient = io(serverAddress);
+
+document.getElementById('productForm').addEventListener('submit', function(event) {
+    event.preventDefault(); 
+
+    const name = document.getElementById('name').value;
+    const price = document.getElementById('price').value;
+
+    socketClient.emit('newProduct', { name, price });
+
+    document.getElementById('name').value = '';
+    document.getElementById('price').value = '';
+});
+</script>

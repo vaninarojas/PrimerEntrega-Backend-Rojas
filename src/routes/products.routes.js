@@ -2,6 +2,7 @@ import  { Router } from "express";
 import ProductManager from "../app.js";
 import { uploadMiddleware } from "../uploader.js";
 
+
 const router = Router()
 const manager = new ProductManager("./src/products.json");
 
