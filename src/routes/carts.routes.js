@@ -1,8 +1,11 @@
 import { Router } from "express";
 import { promises as fs } from 'fs';
 
+
 const router = Router();
-const cartsFilePath = './src/carts.json'
+
+
+const cartsFilePath = ("./src/carts.json")
 
 
 async function loadCartsData() {
@@ -21,7 +24,7 @@ function saveCartsData(data) {
 }
 
 
-router.get("/:cid", async (req, res) => {
+router.get("/", async (req, res) => {
     try {
         const cartId = req.params.cid;
         const cartsData = await loadCartsData();

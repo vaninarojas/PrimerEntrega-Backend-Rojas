@@ -1,28 +1,61 @@
 
-<h3>Nuevo producto</h3>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listado de Productos (Tiempo Real)</title>
+</head>
+<body>
+    <div>
+        <h1>Listado de Productos (Tiempo Real)</h1>
 
-<form id="productForm">
-    <input class="form-control" type="text" id="name" name="name" placeholder="Nombre" style="width: 300px;"><br />
-    <input class="form-control" type="number" id="price" name="price" style="width: 100px;"><br />
+        <ul class="list-group" id="productList">
+          
+        </ul>
+    </div>
 
-    <button type="submit" class="btn btn-success">Cargar</button>
-</form>
+    
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+       
+        const socket = io();
 
-<script src="https://cdn.socket.io/4.7.5/socket.io.min.js" integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO" crossorigin="anonymous"></script>
+        socket.on('productUpdate', () => {
+         
+            fetch('/api/products')
+                .then(response => response.json())
+                .then(products => renderProductList(products))
+                .catch(error => console.error('Error al obtener productos:', error));
+        });
 
-<script>    
-const serverAddress = 'ws://localhost:8080';
-const socketClient = io(serverAddress);
+       
+        function renderProductList(products) {
+            const productList = document.getElementById('productList');
+            productList.innerHTML = ''; 
 
-document.getElementById('productForm').addEventListener('submit', function(event) {
-    event.preventDefault(); 
+            products.forEach(product => {
+                const listItem = document.createElement('li');
+                listItem.classList.add('list-group-item');
+                listItem.innerHTML = `
+                    <img src="${product.thumbnail}" alt="${product.title}" style="max-width: 100px;">
+                    <h3>${product.title}</h3>
+                    <p>${product.description}</p>
+                    <p>Precio: $${product.price}</p>
+                    <p>Código: ${product.code}</p>
+                    <p>Stock: ${product.stock}</p>
+                `;
+                productList.appendChild(listItem);
+            });
+        }
 
-    const name = document.getElementById('name').value;
-    const price = document.getElementById('price').value;
-
-    socketClient.emit('newProduct', { name, price });
-
-    document.getElementById('name').value = '';
-    document.getElementById('price').value = '';
-});
-</script>
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            fetch('/api/products')
+                .then(response => response.json())
+                .then(products => renderProductList(products))
+                .catch(error => console.error('Error al obtener productos:', error));
+        });
+    </script>
+</body>
+</html>
