@@ -4,7 +4,7 @@
     "title": "Zapatillas deportivas",
     "description": "Blancas",
     "price": 20000,
-    "thumbnail": "zapasblancas.jpg",
+    "thumbnail": "/img/zapasblancas.jpg",
     "code": "COD001",
     "stock": 100
   },
@@ -13,7 +13,7 @@
     "title": "Zapatillas deportivas",
     "description": "Negras",
     "price": 15000,
-    "thumbnail": "negras.jpg",
+    "thumbnail": "/img/negras.jpg",
     "code": "COD002",
     "stock": 50
   },
@@ -22,7 +22,7 @@
     "title": "Zapatillas de salir",
     "description": "Rayadas",
     "price": 24000,
-    "thumbnail": "rayadas.jpg",
+    "thumbnail": "/img/rayadas.jpg",
     "code": "COD003",
     "stock": 200
   },
@@ -31,7 +31,7 @@
     "title": "Zapatillas de salir",
     "description": "Lisas",
     "price": 35000,
-    "thumbnail": "lisas.jpg",
+    "thumbnail": "/img/lisas.jpg",
     "code": "COD004",
     "stock": 70
   }
