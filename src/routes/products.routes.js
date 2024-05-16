@@ -2,12 +2,22 @@ import  { Router } from "express";
 import ProductManager from "../app.js";
 import { uploadMiddleware } from "../uploader.js";
 
+import productsModel from "../models/products.model.js" 
+
 
 const router = Router()
 const manager = new ProductManager("./src/products.json");
 
 
+
+router.get ("/," , async (req, res) => {
+const products = await productsModel.find();
+res.status(200).send({ origin: config.SERVER, payload: products})
+});
+
+
 router.get("/", async (req, res) => {
+    
     try {
         const limit = parseInt(req.query.limit) || 0;
         const products = await manager.getProducts(limit);
@@ -32,8 +42,10 @@ router.get("/:pid", async (req, res) => {
 router.post("/", uploadMiddleware, async (req, res) => {
     try {
         const { title, price, description, thumbnails } = req.body;
+       
+        const socket = req.app.get("socketServer");
 
-        if (!title || !price || !description) {
+        if (!product.title || !product.price || !product.description) {
             return res.status(400).send({ status: 0, message: "Los campos 'name', 'price' y 'description' son obligatorios." });
         }
 
@@ -48,6 +60,8 @@ router.post("/", uploadMiddleware, async (req, res) => {
         };
 
         await manager.addProduct(newProduct);
+        console.log("Emitiendo evento productUpdate")
+        socket.emit("productUpdate", newProduct)
 
         res.status(201).send({ status: 1, message: "Producto agregado correctamente", payload: newProduct });
     } catch (error) {

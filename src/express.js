@@ -5,10 +5,12 @@ import productroutes from "./routes/products.routes.js"
 import cartroutes from "./routes/carts.routes.js"
 import viewsRouter from "./routes/views.routes.js"
 import { Server } from "socket.io";
+import mongoose from "mongoose";
 
 
 const app = express();
-const httpServer = app.listen(config.PORT, () => {
+const httpServer = app.listen(config.PORT, async () => {
+    await mongoose.connect(config.MONGODB_URI);
     console.log(`App activa en puerto ${config.PORT}`);
 });
 
@@ -35,8 +37,8 @@ app.use("/static", express.static(`${config.DIRNAME}/public`));
 socketServer.on('connection', client => {
     console.log(`Cliente conectado, id ${client.id} desde ${client.handshake.address}`);
 
-    client.on('newMessage', data => {
-        console.log(`Mensaje recibido desde ${client.id}: ${data}`);
-        client.emit('newMessageConfirmation', 'OK');
+    client.on('newProduct', product => {
+        console.log(`Mensaje recibido desde ${client.id}:`, product);
+        socketServer.emit('productUpdate', product);
     });
 });

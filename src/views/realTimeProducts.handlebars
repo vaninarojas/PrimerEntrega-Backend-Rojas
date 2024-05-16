@@ -21,11 +21,11 @@
        
         const socket = io();
 
-        socket.on('productUpdate', () => {
+        socket.on('productUpdate', (product) => {
          
             fetch('/api/products')
                 .then(response => response.json())
-                .then(products => renderProductList(products))
+                .then(products => renderProductList(products.payload))
                 .catch(error => console.error('Error al obtener productos:', error));
         });
 
@@ -38,7 +38,7 @@
                 const listItem = document.createElement('li');
                 listItem.classList.add('list-group-item');
                 listItem.innerHTML = `
-                    <img src="${product.thumbnail}" alt="${product.title}" style="max-width: 100px;">
+                    <img src="/static/img/${product.thumbnail}" alt="${product.title}" style="max-width: 100px;">
                     <h3>${product.title}</h3>
                     <p>${product.description}</p>
                     <p>Precio: $${product.price}</p>
@@ -53,7 +53,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             fetch('/api/products')
                 .then(response => response.json())
-                .then(products => renderProductList(products))
+                .then(products => renderProductList(products.payload))
                 .catch(error => console.error('Error al obtener productos:', error));
         });
     </script>
